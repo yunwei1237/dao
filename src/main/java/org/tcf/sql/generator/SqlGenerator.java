@@ -1,5 +1,6 @@
 package org.tcf.sql.generator;
 
+import org.tcf.sql.entity.ColumnInfo;
 import org.tcf.sql.entity.ConditionType;
 import org.tcf.sql.entity.EntityInfo;
 import org.tcf.sql.entity.Order;
@@ -16,14 +17,14 @@ public interface SqlGenerator {
 	 * @return sql语句
 	 * @throws Exception
 	 */
-	String genertInsert(EntityInfo info) throws Exception;
+	String genertInsert(String catolog,String table,ColumnInfo[] columns) throws Exception;
 	/**
 	 * 生成update语句
 	 * @param info 生成sql需要的字段信息和数据库信息
 	 * @return sql语句
 	 * @throws Exception
 	 */
-	String genertUpdate(EntityInfo info) throws Exception;
+	String genertUpdate(String catolog,String table,ColumnInfo[] columns,ColumnInfo[] where) throws Exception;
 	/**
 	 * 生成delete语句
 	 * @param info 生成sql需要的字段信息和数据库信息

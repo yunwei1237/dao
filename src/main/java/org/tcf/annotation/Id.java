@@ -9,17 +9,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Id {
 	/**
-	 * 对应字段的名称，默认为实体属性的名称
-	 * @return
-	 */
-	String name() default "";
-	/**
 	 * 指定主键的生成策略
 	 * @return
 	 */
-	PrimaryKeyType type() default PrimaryKeyType.assigned;
+	PrimaryKeyType type() default PrimaryKeyType.sequence;
 	/**
-	 * 指定序列的名称
+	 * 指定序列的名称,type为PrimaryKeyType.sequence时指定
 	 */
 	String sequenceName() default "";
 }

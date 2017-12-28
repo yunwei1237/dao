@@ -3,12 +3,13 @@ package org.tcf.sql.generator.impl;
 import java.util.List;
 
 import org.tcf.annotation.PrimaryKeyType;
+import org.tcf.sql.entity.ColumnInfo;
 import org.tcf.sql.entity.ConditionType;
 import org.tcf.sql.entity.EntityInfo;
 import org.tcf.sql.entity.Order;
 import org.tcf.sql.generator.SqlGenerator;
 import org.tcf.sql.util.SqlUtil;
-import org.tcf.sql.util.TrimUtil;
+import org.tcf.sql.util.StringUtil;
 
 
 public class MySqlSqlGeneratorImpl implements SqlGenerator {
@@ -18,25 +19,22 @@ public class MySqlSqlGeneratorImpl implements SqlGenerator {
 		// TODO Auto-generated method stub
 		String fields = "";
 		String values = "";
-		//id
-		if(info.getType() == PrimaryKeyType.assigned){
-			if(info.getIdVal() != null){
-				fields += info.getId() + ",";
-				values += "?,";
-			}
-		}else if(info.getType() == PrimaryKeyType.autoIncrement){
-			if(info.getIdVal() != null){
-				fields += info.getId() + ",";
-				values += "default,";
-			}
-		}
-		
 		//列
-		for(String column:info.getColumns()){
-			fields += column + ",";
-			values += "?,";
+		for(ColumnInfo column:info.getColumns()){
+			if(column.getValue() != null){
+				fields += column.getName() + ",";
+				if(column.getForeignKey()){
+					if(info.getType() == PrimaryKeyType.assigned){
+						values += "?,";
+					}else if(info.getType() == PrimaryKeyType.autoIncrement){
+						values += "default,";
+					}
+				}else{
+					values += "?,";
+				}
+			}
 		}
-		return String.format("insert into %s%s(%s) values(%s)", info.getCatelog(),info.getTable(),TrimUtil.trimEnd(fields, ","),TrimUtil.trimEnd(values, ","));
+		return String.format("insert into %s%s(%s) values(%s)", info.getCatelog(),info.getTable(),StringUtil.trimEnd(fields, ","),StringUtil.trimEnd(values, ","));
 	}
 
 	@Override
@@ -50,7 +48,7 @@ public class MySqlSqlGeneratorImpl implements SqlGenerator {
 		if(info.getIdVal() != null){
 			conditions += info.getId()+" = ?,";
 		}
-		return String.format("update %s%s set %s where %s", info.getCatelog(),info.getTable(),TrimUtil.trimEnd(sets, ","),TrimUtil.trimEnd(conditions, ","));
+		return String.format("update %s%s set %s where %s", info.getCatelog(),info.getTable(),StringUtil.trimEnd(sets, ","),StringUtil.trimEnd(conditions, ","));
 	}
 
 	@Override
@@ -60,7 +58,7 @@ public class MySqlSqlGeneratorImpl implements SqlGenerator {
 		if(info.getIdVal() != null){
 			conditions += info.getId()+" = ?,";
 		}
-		return String.format("delete from %s%s where %s", info.getCatelog(),info.getTable(),TrimUtil.trimEnd(conditions, ","));
+		return String.format("delete from %s%s where %s", info.getCatelog(),info.getTable(),StringUtil.trimEnd(conditions, ","));
 	}
 	/**
 	 * order by stuname desc,age asc
@@ -85,7 +83,7 @@ public class MySqlSqlGeneratorImpl implements SqlGenerator {
 			conditions += String.format("%s %s %s ? ", conditionType,column,op);
 		}
 		return String.format("select * from %s%s where%s%s%s%s",
-				info.getCatelog(),info.getTable(),TrimUtil.trimBegin(conditions, "and","or"),TrimUtil.trimEnd(SqlUtil.getGroupBy(groups), ","),TrimUtil.trimEnd(SqlUtil.getOderBy(orders),","),getLimit(begin,size));
+				info.getCatelog(),info.getTable(),StringUtil.trimBegin(conditions, "and","or"),StringUtil.trimEnd(SqlUtil.getGroupBy(groups), ","),StringUtil.trimEnd(SqlUtil.getOderBy(orders),","),getLimit(begin,size));
 	}
 	
 	private String getLimit(Integer begin,Integer size) throws Exception{

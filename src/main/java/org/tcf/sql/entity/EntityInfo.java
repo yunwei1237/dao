@@ -11,27 +11,38 @@ import org.tcf.annotation.PrimaryKeyType;
  *
  */
 public class EntityInfo {
+	/**
+	 * 用于保存数据库名
+	 */
 	private String catelog;
+	/**
+	 * 用于保存表名
+	 */
 	private String table;
-	private String id;
-	private Object idVal;
+	/**
+	 * 用于保存主键的类型
+	 */
 	private PrimaryKeyType type;
-	private List<String> columns;
-	private List<Object> values;
-	
+	/**
+	 * 用于保存某些主键下的其它的信息，比如序列名称
+	 */
+	private String typeValue;
+	/**
+	 * 用于保存所有列信息
+	 */
+	private List<ColumnInfo> columns;
 	public EntityInfo() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
-	public EntityInfo(String catelog, String table, String id, Object idVal,
-			PrimaryKeyType type, List<String> columns, List<Object> values) {
+	public EntityInfo(String catelog, String table, PrimaryKeyType type,
+			String typeValue, List<ColumnInfo> columns) {
 		super();
 		this.catelog = catelog;
 		this.table = table;
-		this.id = id;
-		this.idVal = idVal;
 		this.type = type;
+		this.typeValue = typeValue;
 		this.columns = columns;
-		this.values = values;
 	}
 	public String getCatelog() {
 		return catelog;
@@ -45,40 +56,28 @@ public class EntityInfo {
 	public void setTable(String table) {
 		this.table = table;
 	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	public Object getIdVal() {
-		return idVal;
-	}
-	public void setIdVal(Object idVal) {
-		this.idVal = idVal;
-	}
 	public PrimaryKeyType getType() {
 		return type;
 	}
 	public void setType(PrimaryKeyType type) {
 		this.type = type;
 	}
-	public List<String> getColumns() {
+	public String getTypeValue() {
+		return typeValue;
+	}
+	public void setTypeValue(String typeValue) {
+		this.typeValue = typeValue;
+	}
+	public List<ColumnInfo> getColumns() {
 		return columns;
 	}
-	public void setColumns(List<String> columns) {
+	public void setColumns(List<ColumnInfo> columns) {
 		this.columns = columns;
-	}
-	public List<Object> getValues() {
-		return values;
-	}
-	public void setValues(List<Object> values) {
-		this.values = values;
 	}
 	@Override
 	public String toString() {
-		return "EntityInfo [catelog=" + catelog + ", table=" + table + ", id="
-				+ id + ", idVal=" + idVal + ", type=" + type + ", columns="
-				+ columns + ", values=" + values + "]";
+		return "EntityInfo [catelog=" + catelog + ", table=" + table
+				+ ", type=" + type + ", typeValue=" + typeValue + ", columns="
+				+ columns + "]";
 	}
 }

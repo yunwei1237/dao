@@ -19,10 +19,18 @@ public @interface Column {
 	 */
 	String name() default "";
 	/**
-	 * 字段的长度
+	 * 字段的长度（字符和数字）
 	 * @return
 	 */
 	int length() default 0;
-	
-	
+	/**
+	 * 字段的小数位
+	 * @return
+	 */
+	int scale() default 0;
+	/**
+	 * 是否不允许为null，默认false，也就是允许为null
+	 * @return
+	 */
+	boolean notNull() default false;
 }

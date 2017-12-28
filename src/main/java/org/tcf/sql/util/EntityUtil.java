@@ -20,65 +20,72 @@ import org.tcf.annotation.PrimaryKeyType;
 import org.tcf.sql.entity.ColumnInfo;
 import org.tcf.sql.entity.EntityInfo;
 
-
+/**
+ * 用于处理与实体相关的工具
+ * @author Archer Tan
+ *
+ */
 public class EntityUtil {
+	/**
+	 * 用于收集实体的注解信息
+	 * @param entity
+	 * @return
+	 * @throws Exception
+	 */
 	public static EntityInfo getInfo(Object entity) throws Exception{
 		EntityInfo info = new EntityInfo();
+		ColumnInfo pk = null;
 		Class clazz = entity.getClass();
 		String className = clazz.getSimpleName();
 		//处理Entity注解
 		Annotation entityAnno = clazz.getAnnotation(Entity.class);
 		if(entityAnno == null)
 			throw new Exception(clazz.getName()+":实体没有Entity注解");
-		String catelog = (String)getAnnotationVal(entityAnno, "catelog");
-		info.setCatelog(isEmpty(catelog)?"":catelog+".");
-		String table = (String)getAnnotationVal(entityAnno, "table");
-		info.setTable(isEmpty(table)?className:table);
+		String catelog = (String)AnnotationUtil.getAnnotationVal(entityAnno, "catelog");
+		info.setCatelog(StringUtil.isEmpty(catelog)?"":catelog+".");//数据库名
+		String table = (String)AnnotationUtil.getAnnotationVal(entityAnno, "table");
+		info.setTable(StringUtil.isEmpty(table)?className:table);//表名
 		//保存所有列名
-		List<String> columns = new ArrayList<String>();
+		List<ColumnInfo> columns = new ArrayList<ColumnInfo>();
 		//保存所有值
-		List<Object> values = new ArrayList<Object>();
 		//处理属性（@NoColumn，@Id，@Column）
 		for(Field field:clazz.getDeclaredFields()){
 			//@NoColumn
-			Annotation nonPersistentAnno = field.getAnnotation(NoColumn.class);
-			if(nonPersistentAnno == null){//如果不存在NonPersistent注解，就说明与数据库相关，需要信息收集
+			Annotation noColumn = field.getAnnotation(NoColumn.class);
+			if(noColumn == null){//如果不存在NoColumn注解，就说明与数据库相关，需要信息收集
+				ColumnInfo column = new ColumnInfo();
 				//@Id，
 				Annotation idAnno = field.getAnnotation(Id.class);
 				//@Column
 				Annotation columnAnno = field.getAnnotation(Column.class);
-				if(idAnno != null && columnAnno != null){
-					throw new Exception(clazz.getName()+"实体的属性"+field.getName()+"只能拥有@Id或@column，不能同时设置");
-				}
 				if(idAnno != null){
-					String id = info.getId();
-					if(id != null) 
-						throw new Exception(clazz.getName()+"实体的属性"+field.getName()+"只能拥有一个@Id注解");
-					String name = (String)getAnnotationVal(idAnno, "name");
-					info.setId(isEmpty(name)?field.getName():name);
-					info.setType((PrimaryKeyType)getAnnotationVal(idAnno, "type"));
-					info.setIdVal(getFieldVal(field, entity));
-				}else if(columnAnno != null){
-					//先获得属性的值
-					Object val = getFieldVal(field, entity);
-					if(val != null){//如果属性的值不为空就收集信息
-						String name = (String) getAnnotationVal(columnAnno, "name");
-						columns.add(isEmpty(name)?field.getName():name);//列名
-						values.add(val);//值
-					}
+					if(pk != null) 
+						throw new Exception(clazz.getName()+"实体的属性"+field.getName()+"出现重复的@Id注解");
+					//说明该列为主键
+					column.setPrimaryKey(true);
+					info.setType((PrimaryKeyType)AnnotationUtil.getAnnotationVal(idAnno, "type"));
+					//指定主键对应的列，以免多个列指定@Id注解
+					pk = column;
 				}
+				if(columnAnno != null){
+					String name = (String) AnnotationUtil.getAnnotationVal(columnAnno, "name");//列名
+					column.setName(StringUtil.isEmpty(name)?field.getName():name);//未指定列名时使用属性名
+					column.setValue(getFieldVal(field, entity));//值
+				}
+				columns.add(column);
 			}
+			
 		}
 		info.setColumns(columns);
-		info.setValues(values);
 		return info;
 	}
-	private static boolean isEmpty(String str){
-		return str.trim().length()==0 || str == null;
-	}
-	private static String getCatelog(String catelog){
-		return catelog.trim().length()==0?"":catelog+".";
-	}
+	
+	/**
+	 * 获得列的值
+	 * @param field
+	 * @param target
+	 * @return
+	 */
 	public static Object getFieldVal(Field field,Object target){
 		field.setAccessible(true);
 		try {
@@ -92,70 +99,40 @@ public class EntityUtil {
 		}
 		return null;
 	}
-	public static Object getAnnotationVal(Annotation entityAnno,String methodName){
-		Method method;
-		try {
-			method = entityAnno.getClass().getMethod(methodName);
-			return method.invoke(entityAnno);
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-	public static List<ColumnInfo> getAllColumns(Class clazz){
-		List<ColumnInfo> columns = new ArrayList<ColumnInfo>();
-		for(Field field:clazz.getDeclaredFields()){
-			//@Id，
-			Annotation idAnno = field.getAnnotation(Id.class);
-			//@Column
-			Annotation columnAnno = field.getAnnotation(Column.class);
-			//如果该列没有和数据库相关，就跳过
-			if(idAnno == null && columnAnno == null) continue;
-			ColumnInfo info = new ColumnInfo();
-			if(idAnno != null){
-				info.setPrimaryKey(true);
-				info.setName(field.getName());
-				info.setType(field.getType());
-			}else if(columnAnno != null){
-				info.setName(field.getName());
-				info.setType(field.getType());
-			}
-			columns.add(info);
-		}
-		return columns;
-	}
 	
-	private static Object getVal(ResultSet rs,String name,Class type){
+	/**
+	 * 根据指定的类型获得相应的值
+	 * @param rs 结果集
+	 * @param name 指定的列名
+	 * @param type 指定的类型
+	 * @return
+	 */
+	public static Object getVal(ResultSet rs,String name,Class type){
 		Object val = null;
 		try {
-			if("java.lang.Integer".equals(type.getName())){
+			if("java.lang.Integer".equals(type.getName()) 
+					&& "int".equals(type.getName())){
 				val = rs.getInt(name);
-			}else if("java.lang.Double".equals(type.getName())){
+			}else if("java.lang.Double".equals(type.getName())
+					&& "double".equals(type.getName())){
 				val = rs.getDouble(name);
-			}else if("java.lang.Short".equals(type.getName())){
+			}else if("java.lang.Short".equals(type.getName())
+					&& "short".equals(type.getName())){
 				val = rs.getShort(name);
-			}else if("java.lang.Byte".equals(type.getName())){
+			}else if("java.lang.Byte".equals(type.getName())
+					&& "byte".equals(type.getName())){
 				val = rs.getByte(name);
-			}else if("java.lang.Long".equals(type.getName())){
+			}else if("java.lang.Long".equals(type.getName()) 
+					&& "long".equals(type.getName())){
 				val = rs.getLong(name);
-			}else if("java.lang.Character".equals(type.getName())){
+			}else if("java.lang.Character".equals(type.getName())
+					&& "char".equals(type.getName())){
 				val = rs.getString(name).charAt(0);
-			}else if("java.lang.Float".equals(type.getName())){
+			}else if("java.lang.Float".equals(type.getName())
+					&& "float".equals(type.getName())){
 				val = rs.getFloat(name);
-			}else if("java.lang.Boolean".equals(type.getName())){
+			}else if("java.lang.Boolean".equals(type.getName())
+					&& "boolean".equals(type.getName())){
 				val = rs.getBoolean(name);
 			}else if("java.lang.String".equals(type.getName())){
 				val = rs.getString(name);
@@ -171,15 +148,15 @@ public class EntityUtil {
 		return val;
 	}
 	/**
-	 * 将resultset类型转换成实体的集合
+	 * 将resultset类型转换成实体的集合(暂时不支持关系 ：多对一，一对多之类)
 	 * @param rs
 	 * @param clazz
 	 * @return
 	 */
 	public static List fill(ResultSet rs,Class clazz){
 		List list = new ArrayList();
-		List<ColumnInfo> columns = getAllColumns(clazz);
 		try {
+			List<ColumnInfo> columns = getInfo(clazz.newInstance()).getColumns();
 			while(rs.next()){
 				Object obj = clazz.newInstance();//new Student();
 				for(Field field:clazz.getDeclaredFields()){
@@ -204,6 +181,9 @@ public class EntityUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
