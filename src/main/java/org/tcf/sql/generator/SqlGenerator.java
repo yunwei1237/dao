@@ -5,41 +5,41 @@ import org.tcf.sql.entity.EntityInfo;
 import org.tcf.sql.entity.Order;
 /**
  * 
- * ÓÃÓÚÉú³ÉsqlÓï¾ä
+ * ç”¨äºç”Ÿæˆsqlè¯­å¥
  * @author Archer Tan
  *
  */
 public interface SqlGenerator {
 	/**
-	 * Éú³ÉinsertÓï¾ä
-	 * @param info Éú³ÉsqlĞèÒªµÄ×Ö¶ÎĞÅÏ¢ºÍÊı¾İ¿âĞÅÏ¢
-	 * @return sqlÓï¾ä
+	 * ç”Ÿæˆinsertè¯­å¥
+	 * @param info ç”Ÿæˆsqléœ€è¦çš„å­—æ®µä¿¡æ¯å’Œæ•°æ®åº“ä¿¡æ¯
+	 * @return sqlè¯­å¥
 	 * @throws Exception
 	 */
 	String genertInsert(EntityInfo info) throws Exception;
 	/**
-	 * Éú³ÉupdateÓï¾ä
-	 * @param info Éú³ÉsqlĞèÒªµÄ×Ö¶ÎĞÅÏ¢ºÍÊı¾İ¿âĞÅÏ¢
-	 * @return sqlÓï¾ä
+	 * ç”Ÿæˆupdateè¯­å¥
+	 * @param info ç”Ÿæˆsqléœ€è¦çš„å­—æ®µä¿¡æ¯å’Œæ•°æ®åº“ä¿¡æ¯
+	 * @return sqlè¯­å¥
 	 * @throws Exception
 	 */
 	String genertUpdate(EntityInfo info) throws Exception;
 	/**
-	 * Éú³ÉdeleteÓï¾ä
-	 * @param info Éú³ÉsqlĞèÒªµÄ×Ö¶ÎĞÅÏ¢ºÍÊı¾İ¿âĞÅÏ¢
-	 * @return sqlÓï¾ä
+	 * ç”Ÿæˆdeleteè¯­å¥
+	 * @param info ç”Ÿæˆsqléœ€è¦çš„å­—æ®µä¿¡æ¯å’Œæ•°æ®åº“ä¿¡æ¯
+	 * @return sqlè¯­å¥
 	 * @throws Exception
 	 */
 	String genertDelete(EntityInfo info) throws Exception;
 	/**
-	 * Éú³ÉselectÓï¾ä
-	 * @param info Éú³ÉsqlĞèÒªµÄ×Ö¶ÎĞÅÏ¢ºÍÊı¾İ¿âĞÅÏ¢
-	 * @param type Éú³ÉµÄÌõ¼şÖ®¼äµÄÂß¼­¹ØÏµ
-	 * @param likes Ö¸¶¨ÄÄÒ»Ğ©×Ö¶ÎĞèÒªÄ£ºı²éÑ¯
-	 * @param groups Ê¹ÓÃÄÄÒ»Ğ©×Ö¶Î½øĞĞ·Ö×é
-	 * @param orders ÅÅĞò
-	 * @param begin ÆğÊ¼µÄĞĞ
-	 * @param size ×î¶àµÄĞĞÊı
+	 * ç”Ÿæˆselectè¯­å¥
+	 * @param info ç”Ÿæˆsqléœ€è¦çš„å­—æ®µä¿¡æ¯å’Œæ•°æ®åº“ä¿¡æ¯
+	 * @param type ç”Ÿæˆçš„æ¡ä»¶ä¹‹é—´çš„é€»è¾‘å…³ç³»
+	 * @param likes æŒ‡å®šå“ªä¸€äº›å­—æ®µéœ€è¦æ¨¡ç³ŠæŸ¥è¯¢
+	 * @param groups ä½¿ç”¨å“ªä¸€äº›å­—æ®µè¿›è¡Œåˆ†ç»„
+	 * @param orders æ’åº
+	 * @param begin èµ·å§‹çš„è¡Œ
+	 * @param size æœ€å¤šçš„è¡Œæ•°
 	 * @return
 	 * @throws Exception
 	 */

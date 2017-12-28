@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 如果加载该注解，代表该属性和数据无关
+ * 濡傛灉鍔犺浇璇ユ敞瑙ｏ紝浠ｈ〃璇ュ睘鎬у拰鏁版嵁鏃犲叧
  * @author Archer Tan
  *
  */

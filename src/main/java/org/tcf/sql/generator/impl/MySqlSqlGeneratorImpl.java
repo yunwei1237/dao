@@ -31,7 +31,7 @@ public class MySqlSqlGeneratorImpl implements SqlGenerator {
 			}
 		}
 		
-		//ÁĞ
+		//åˆ—
 		for(String column:info.getColumns()){
 			fields += column + ",";
 			values += "?,";
@@ -92,8 +92,8 @@ public class MySqlSqlGeneratorImpl implements SqlGenerator {
 		if(begin == null) begin = 0;
 		if(size == null) size = 0;
 		if(begin != 0 && size == 0)
-			throw new Exception("sizeÎª0»òÎªnullÊ±²éÑ¯²»µ½ÈÎºÎĞÅÏ¢");
-		//Èç¹ûbeginºÍsize¶¼Îª0ËµÃ÷²»ĞèÒªÏŞÖÆ
+			throw new Exception("sizeä¸º0æˆ–ä¸ºnullæ—¶æŸ¥è¯¢ä¸åˆ°ä»»ä½•ä¿¡æ¯");
+		//å¦‚æœbeginå’Œsizeéƒ½ä¸º0è¯´æ˜ä¸éœ€è¦é™åˆ¶
 		if(begin == 0 && size == 0)
 			return "";
 		return String.format(" limit %s,%s", begin,size);

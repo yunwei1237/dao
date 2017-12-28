@@ -20,7 +20,7 @@ import org.tcf.sql.util.EntityUtil;
 public class SessionImpl implements Session {
 	Logger log = Logger.getLogger(SessionImpl.class);
 	/**
-	 * ¸Ã¶ÔÏó²»Ó¦¸ÃÖ±½Ó´´½¨¶øÊÇÓ¦¸ÃÍ¨¹ıÅäÖÃÀ´Íê³É£¬ÒÔ±ãÓÚÇĞ»» ³ÉÆäËüµÄÊı¾İ¿â(oracle)
+	 * è¯¥å¯¹è±¡ä¸åº”è¯¥ç›´æ¥åˆ›å»ºè€Œæ˜¯åº”è¯¥é€šè¿‡é…ç½®æ¥å®Œæˆï¼Œä»¥ä¾¿äºåˆ‡æ¢ æˆå…¶å®ƒçš„æ•°æ®åº“(oracle)
 	 */
 	private SqlGenerator gen = new MySqlSqlGeneratorImpl();
 	@Override

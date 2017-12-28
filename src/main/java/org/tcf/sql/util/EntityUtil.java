@@ -26,45 +26,45 @@ public class EntityUtil {
 		EntityInfo info = new EntityInfo();
 		Class clazz = entity.getClass();
 		String className = clazz.getSimpleName();
-		//´¦ÀíEntity×¢½â
+		//å¤„ç†Entityæ³¨è§£
 		Annotation entityAnno = clazz.getAnnotation(Entity.class);
 		if(entityAnno == null)
-			throw new Exception(clazz.getName()+":ÊµÌåÃ»ÓĞEntity×¢½â");
+			throw new Exception(clazz.getName()+":å®ä½“æ²¡æœ‰Entityæ³¨è§£");
 		String catelog = (String)getAnnotationVal(entityAnno, "catelog");
 		info.setCatelog(isEmpty(catelog)?"":catelog+".");
 		String table = (String)getAnnotationVal(entityAnno, "table");
 		info.setTable(isEmpty(table)?className:table);
-		//±£´æËùÓĞÁĞÃû
+		//ä¿å­˜æ‰€æœ‰åˆ—å
 		List<String> columns = new ArrayList<String>();
-		//±£´æËùÓĞÖµ
+		//ä¿å­˜æ‰€æœ‰å€¼
 		List<Object> values = new ArrayList<Object>();
-		//´¦ÀíÊôĞÔ£¨@NoColumn£¬@Id£¬@Column£©
+		//å¤„ç†å±æ€§ï¼ˆ@NoColumnï¼Œ@Idï¼Œ@Columnï¼‰
 		for(Field field:clazz.getDeclaredFields()){
 			//@NoColumn
 			Annotation nonPersistentAnno = field.getAnnotation(NoColumn.class);
-			if(nonPersistentAnno == null){//Èç¹û²»´æÔÚNonPersistent×¢½â£¬¾ÍËµÃ÷ÓëÊı¾İ¿âÏà¹Ø£¬ĞèÒªĞÅÏ¢ÊÕ¼¯
-				//@Id£¬
+			if(nonPersistentAnno == null){//å¦‚æœä¸å­˜åœ¨NonPersistentæ³¨è§£ï¼Œå°±è¯´æ˜ä¸æ•°æ®åº“ç›¸å…³ï¼Œéœ€è¦ä¿¡æ¯æ”¶é›†
+				//@Idï¼Œ
 				Annotation idAnno = field.getAnnotation(Id.class);
 				//@Column
 				Annotation columnAnno = field.getAnnotation(Column.class);
 				if(idAnno != null && columnAnno != null){
-					throw new Exception(clazz.getName()+"ÊµÌåµÄÊôĞÔ"+field.getName()+"Ö»ÄÜÓµÓĞ@Id»ò@column£¬²»ÄÜÍ¬Ê±ÉèÖÃ");
+					throw new Exception(clazz.getName()+"å®ä½“çš„å±æ€§"+field.getName()+"åªèƒ½æ‹¥æœ‰@Idæˆ–@columnï¼Œä¸èƒ½åŒæ—¶è®¾ç½®");
 				}
 				if(idAnno != null){
 					String id = info.getId();
 					if(id != null) 
-						throw new Exception(clazz.getName()+"ÊµÌåµÄÊôĞÔ"+field.getName()+"Ö»ÄÜÓµÓĞÒ»¸ö@Id×¢½â");
+						throw new Exception(clazz.getName()+"å®ä½“çš„å±æ€§"+field.getName()+"åªèƒ½æ‹¥æœ‰ä¸€ä¸ª@Idæ³¨è§£");
 					String name = (String)getAnnotationVal(idAnno, "name");
 					info.setId(isEmpty(name)?field.getName():name);
 					info.setType((PrimaryKeyType)getAnnotationVal(idAnno, "type"));
 					info.setIdVal(getFieldVal(field, entity));
 				}else if(columnAnno != null){
-					//ÏÈ»ñµÃÊôĞÔµÄÖµ
+					//å…ˆè·å¾—å±æ€§çš„å€¼
 					Object val = getFieldVal(field, entity);
-					if(val != null){//Èç¹ûÊôĞÔµÄÖµ²»Îª¿Õ¾ÍÊÕ¼¯ĞÅÏ¢
+					if(val != null){//å¦‚æœå±æ€§çš„å€¼ä¸ä¸ºç©ºå°±æ”¶é›†ä¿¡æ¯
 						String name = (String) getAnnotationVal(columnAnno, "name");
-						columns.add(isEmpty(name)?field.getName():name);//ÁĞÃû
-						values.add(val);//Öµ
+						columns.add(isEmpty(name)?field.getName():name);//åˆ—å
+						values.add(val);//å€¼
 					}
 				}
 			}
@@ -118,11 +118,11 @@ public class EntityUtil {
 	public static List<ColumnInfo> getAllColumns(Class clazz){
 		List<ColumnInfo> columns = new ArrayList<ColumnInfo>();
 		for(Field field:clazz.getDeclaredFields()){
-			//@Id£¬
+			//@Idï¼Œ
 			Annotation idAnno = field.getAnnotation(Id.class);
 			//@Column
 			Annotation columnAnno = field.getAnnotation(Column.class);
-			//Èç¹û¸ÃÁĞÃ»ÓĞºÍÊı¾İ¿âÏà¹Ø£¬¾ÍÌø¹ı
+			//å¦‚æœè¯¥åˆ—æ²¡æœ‰å’Œæ•°æ®åº“ç›¸å…³ï¼Œå°±è·³è¿‡
 			if(idAnno == null && columnAnno == null) continue;
 			ColumnInfo info = new ColumnInfo();
 			if(idAnno != null){
@@ -171,7 +171,7 @@ public class EntityUtil {
 		return val;
 	}
 	/**
-	 * ½«resultsetÀàĞÍ×ª»»³ÉÊµÌåµÄ¼¯ºÏ
+	 * å°†resultsetç±»å‹è½¬æ¢æˆå®ä½“çš„é›†åˆ
 	 * @param rs
 	 * @param clazz
 	 * @return

@@ -9,12 +9,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Entity {
 	/**
-	 * Ö¸¶¨¶ÔÓ¦µÄÊı¾İ¿â±íÃû£¬Ä¬ÈÏÎªÊµÌåµÄÃû×Ö
+	 * æŒ‡å®šå¯¹åº”çš„æ•°æ®åº“è¡¨åï¼Œé»˜è®¤ä¸ºå®ä½“çš„åå­—
 	 * @return
 	 */
 	String table() default "";
 	/**
-	 * ¶ÔÓ¦Êı¾İ¿âÃû£¬Ä¬ÈÏÎª¿Õ
+	 * å¯¹åº”æ•°æ®åº“åï¼Œé»˜è®¤ä¸ºç©º
 	 * @return
 	 */
 	String catelog() default "";

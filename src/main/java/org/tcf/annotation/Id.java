@@ -9,17 +9,17 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Id {
 	/**
-	 * ¶ÔÓ¦×Ö¶ÎµÄÃû³Æ£¬Ä¬ÈÏÎªÊµÌåÊôĞÔµÄÃû³Æ
+	 * å¯¹åº”å­—æ®µçš„åç§°ï¼Œé»˜è®¤ä¸ºå®ä½“å±æ€§çš„åç§°
 	 * @return
 	 */
 	String name() default "";
 	/**
-	 * Ö¸¶¨Ö÷¼üµÄÉú³É²ßÂÔ
+	 * æŒ‡å®šä¸»é”®çš„ç”Ÿæˆç­–ç•¥
 	 * @return
 	 */
 	PrimaryKeyType type() default PrimaryKeyType.assigned;
 	/**
-	 * Ö¸¶¨ĞòÁĞµÄÃû³Æ
+	 * æŒ‡å®šåºåˆ—çš„åç§°
 	 */
 	String sequenceName() default "";
 }

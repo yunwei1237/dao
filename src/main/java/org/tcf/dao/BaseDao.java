@@ -12,10 +12,10 @@ import java.util.Properties;
 
 
 /**
- * 1.»ñµÃÁ¬½Ó
- * 2.»ñµÃÖ´ĞĞsqlµÄ¶ÔÏó 
- * 3.Ö´ĞĞ²éÑ¯µÄsql ²éÑ¯
- * 4.Ö´ĞĞ·Ç²éÑ¯µÄsql ÔöÉ¾¸Ä  crud    create,retrieve,update,delte
+ * 1.è·å¾—è¿æ¥
+ * 2.è·å¾—æ‰§è¡Œsqlçš„å¯¹è±¡ 
+ * 3.æ‰§è¡ŒæŸ¥è¯¢çš„sql æŸ¥è¯¢
+ * 4.æ‰§è¡ŒéæŸ¥è¯¢çš„sql å¢åˆ æ”¹  crud    create,retrieve,update,delte
  * @author Archer Tan
  *
  */
@@ -29,20 +29,20 @@ public class BaseDao {
 	private static Connection conn;
 	private static PreparedStatement state;
 	private static ResultSet rs;
-	//Àà±»¼ÓÔØµÄÊ±ºòÖ´ĞĞ
+	//ç±»è¢«åŠ è½½çš„æ—¶å€™æ‰§è¡Œ
 	static{
 		Properties props = new Properties();
 		
 		
 		try {
-			//´ÓsrcÄ¿Â¼ÏÂ¶ÁÈ¡
+			//ä»srcç›®å½•ä¸‹è¯»å–
 			InputStream is = BaseDao.class.getClassLoader().getResourceAsStream("jdbc.properties");
 			props.load(is);
 			driver = props.getProperty("driver");
 			url = props.getProperty("url");
 			username = props.getProperty("username");
 			password = props.getProperty("password");
-			//1.¼ÓÔØÇı¶¯
+			//1.åŠ è½½é©±åŠ¨
 			Class.forName(driver);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -54,7 +54,7 @@ public class BaseDao {
 	}
 	private static Connection getConnection(){
 		try {
-			//2.»ñµÃÁ¬½Ó
+			//2.è·å¾—è¿æ¥
 			conn = DriverManager.getConnection(url, username,password);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

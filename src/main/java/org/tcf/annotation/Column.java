@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * ÓÃÓÚ±êÊ¶Ò»¸öÊµÌåµÄÊôĞÔºÍÊı¾İ¿âÖĞµÄ×Ö¶ÎÏà¹Ø
+ * ç”¨äºæ ‡è¯†ä¸€ä¸ªå®ä½“çš„å±æ€§å’Œæ•°æ®åº“ä¸­çš„å­—æ®µç›¸å…³
  * @author Archer Tan
  *
  */
@@ -14,12 +14,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Column {
 	/**
-	 * ¶ÔÓ¦×Ö¶ÎµÄÃû³Æ£¬Ä¬ÈÏÎªÊµÌåÊôĞÔµÄÃû³Æ
+	 * å¯¹åº”å­—æ®µçš„åç§°ï¼Œé»˜è®¤ä¸ºå®ä½“å±æ€§çš„åç§°
 	 * @return
 	 */
 	String name() default "";
 	/**
-	 * ×Ö¶ÎµÄ³¤¶È
+	 * å­—æ®µçš„é•¿åº¦
 	 * @return
 	 */
 	int length() default 0;

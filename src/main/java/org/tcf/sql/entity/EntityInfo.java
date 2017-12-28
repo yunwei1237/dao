@@ -6,7 +6,7 @@ import org.tcf.annotation.PrimaryKeyType;
 
 
 /**
- * ���ڱ���ʵ�����Ϣ���Ա���������sql���ʱʹ�á�
+ * 用于保存实体的信息，以便于在生成sql语句时使用。
  * @author Archer Tan
  *
  */
