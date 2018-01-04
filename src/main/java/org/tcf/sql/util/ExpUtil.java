@@ -1,31 +1,88 @@
 package org.tcf.sql.util;
 
-import org.tcf.sql.entity.Expression;
+import java.util.List;
+
 import org.tcf.sql.entity.Operation;
+import org.tcf.sql.entity.exp.ExpLogic;
+import org.tcf.sql.entity.exp.ExpValue;
+import org.tcf.sql.entity.exp.Expression;
 
 public class ExpUtil {
-	public static Expression eq(String name,Object value){
-		return new Expression(name, value, Operation.eq);
+	/**
+	 * 生成<等于>表达式
+	 * 如：age = 12
+	 * @param name
+	 * @param value
+	 * @return
+	 */
+	public static ExpValue eq(String name,Object value){
+		return new ExpValue(name, value, Operation.eq);
 	}
-	public static Expression ne(String name,Object value){
-		return new Expression(name, value, Operation.ne);
+	public static ExpValue ne(String name,Object value){
+		return new ExpValue(name, value, Operation.ne);
 	}
-	public static Expression lt(String name,Object value){
-		return new Expression(name, value, Operation.lt);
+	public static ExpValue lt(String name,Object value){
+		return new ExpValue(name, value, Operation.lt);
 	}
-	public static Expression gt(String name,Object value){
-		return new Expression(name, value, Operation.gt);
+	public static ExpValue gt(String name,Object value){
+		return new ExpValue(name, value, Operation.gt);
 	}
-	public static Expression le(String name,Object value){
-		return new Expression(name, value, Operation.le);
+	public static ExpValue le(String name,Object value){
+		return new ExpValue(name, value, Operation.le);
 	}
-	public static Expression ge(String name,Object value){
-		return new Expression(name, value, Operation.ge);
+	public static ExpValue ge(String name,Object value){
+		return new ExpValue(name, value, Operation.ge);
 	}
-	public static Expression in(String name,Object value){
-		return new Expression(name, value, Operation.in);
+	public static ExpValue in(String name,Object value){
+		return new ExpValue(name, value, Operation.in);
 	}
-	public static Expression like(String name,Object value){
-		return new Expression(name, value, Operation.like);
+	public static ExpValue like(String name,Object value){
+		return new ExpValue(name, value, Operation.like);
+	}
+	/**
+	 * 将所有表达式以and方式连接
+	 * @param exps
+	 * @return
+	 */
+	public static Expression and(ExpValue...exps){
+		Expression exp = exps[0];
+		for(int i = 1;i<exps.length;i++){
+			exp = ExpLogic.and(exp, exps[i]);
+		}
+		return exp;
+	}
+	public static Expression and(List<ExpValue> exps){
+		Expression exp = exps.get(0);
+		for(int i = 1;i<exps.size();i++){
+			exp = ExpLogic.and(exp, exps.get(i));
+		}
+		return exp;
+	}
+	/**
+	 * 将所有表达式以or方式连接
+	 * @param exps
+	 * @return
+	 */
+	public static Expression or(ExpValue...exps){
+		Expression exp = exps[0];
+		for(int i = 1;i<exps.length;i++){
+			exp = ExpLogic.or(exp, exps[i]);
+		}
+		return exp;
+	}
+	public static Expression or(List<ExpValue> exps){
+		Expression exp = exps.get(0);
+		for(int i = 1;i<exps.size();i++){
+			exp = ExpLogic.or(exp, exps.get(i));
+		}
+		return exp;
+	}
+	/**
+	 * 将表达式取反
+	 * @param exp
+	 * @return
+	 */
+	public static Expression not(Expression exp){
+		return ExpLogic.not(exp);
 	}
 }

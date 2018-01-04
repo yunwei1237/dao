@@ -1,9 +1,9 @@
 package org.tcf.sql.generator;
 
-import org.tcf.sql.entity.ColumnInfo;
-import org.tcf.sql.entity.ConditionType;
 import org.tcf.sql.entity.EntityInfo;
 import org.tcf.sql.entity.Order;
+import org.tcf.sql.entity.SqlInfo;
+import org.tcf.sql.entity.exp.Expression;
 /**
  * 
  * 用于生成sql语句
@@ -13,36 +13,49 @@ import org.tcf.sql.entity.Order;
 public interface SqlGenerator {
 	/**
 	 * 生成insert语句
-	 * @param info 生成sql需要的字段信息和数据库信息
-	 * @return sql语句
+	 * @param catolog 数据库名
+	 * @param schema 模式名
+	 * @param table 表名
+	 * @param columns 列名集合
+	 * @return
 	 * @throws Exception
 	 */
-	String genertInsert(String catolog,String table,ColumnInfo[] columns) throws Exception;
+	SqlInfo genertInsert(EntityInfo info);
 	/**
 	 * 生成update语句
-	 * @param info 生成sql需要的字段信息和数据库信息
-	 * @return sql语句
+	 * @param catolog 数据库名
+	 * @param schema 模式名
+	 * @param table 表名
+	 * @param columns 列名集合
+	 * @param where 条件
+	 * @return
 	 * @throws Exception
 	 */
-	String genertUpdate(String catolog,String table,ColumnInfo[] columns,ColumnInfo[] where) throws Exception;
+	SqlInfo genertUpdate(EntityInfo info,Expression where);
 	/**
 	 * 生成delete语句
-	 * @param info 生成sql需要的字段信息和数据库信息
-	 * @return sql语句
+	 * @param catolog 数据库名
+	 * @param schema 模式名
+	 * @param table 表名
+	 * @param where 条件
+	 * @return
 	 * @throws Exception
 	 */
-	String genertDelete(EntityInfo info) throws Exception;
+	SqlInfo genertDelete(EntityInfo info,Expression where);
 	/**
 	 * 生成select语句
-	 * @param info 生成sql需要的字段信息和数据库信息
-	 * @param type 生成的条件之间的逻辑关系
-	 * @param likes 指定哪一些字段需要模糊查询
-	 * @param groups 使用哪一些字段进行分组
+	 * @param catolog 数据库名
+	 * @param schema 模式名
+	 * @param table 表名
+	 * @param selects 选择的字段集合
+	 * @param where 条件
+	 * @param groups 分组
+	 * @param having 分组条件
 	 * @param orders 排序
 	 * @param begin 起始的行
 	 * @param size 最多的行数
 	 * @return
 	 * @throws Exception
 	 */
-	String genertSelect(EntityInfo info,ConditionType type,String[] likes,String[] groups,Order[] orders,Integer begin,Integer size) throws Exception;
+	SqlInfo genertSelect(EntityInfo info,Expression where,String[] groups,Expression having,Order[] orders,Integer begin,Integer size);
 }

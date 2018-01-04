@@ -1,5 +1,7 @@
 package org.tcf.sql.entity;
 
+import org.tcf.sql.entity.fun.Function;
+
 public class ColumnInfo {
 	/**
 	 * 列名
@@ -28,18 +30,22 @@ public class ColumnInfo {
 	/**
 	 * 是否是主键
 	 */
-	private Boolean primaryKey;
+	private Boolean primaryKey = false;
 	/**
 	 * 是否是外键
 	 */
-	private Boolean foreignKey;
+	private Boolean foreignKey = false;
+	/**
+	 * 对该列使用的函数
+	 */
+	private Function function;
 	public ColumnInfo() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public ColumnInfo(String name, Class type, int length, int scale,
 			Boolean notNull, Object value, Boolean primaryKey,
-			Boolean foreignKey) {
+			Boolean foreignKey, Function function) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -49,6 +55,17 @@ public class ColumnInfo {
 		this.value = value;
 		this.primaryKey = primaryKey;
 		this.foreignKey = foreignKey;
+		this.function = function;
+	}
+	public ColumnInfo(String name, Object value) {
+		super();
+		this.name = name;
+		this.value = value;
+	}
+	public ColumnInfo(String name, Function function) {
+		super();
+		this.name = name;
+		this.function = function;
 	}
 	public String getName() {
 		return name;
@@ -97,6 +114,12 @@ public class ColumnInfo {
 	}
 	public void setForeignKey(Boolean foreignKey) {
 		this.foreignKey = foreignKey;
+	}
+	public Function getFunction() {
+		return function;
+	}
+	public void setFunction(Function function) {
+		this.function = function;
 	}
 	@Override
 	public String toString() {

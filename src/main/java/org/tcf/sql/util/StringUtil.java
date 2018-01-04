@@ -72,9 +72,66 @@ public class StringUtil {
 			for(Object o : arr){
 				str.append(String.format("%s%s", o,delimiter));
 			}
+		}else if(obj instanceof int[]){
+			int[] arr = (int[]) obj;
+			for(int o : arr){
+				str.append(String.format("%s%s", o,delimiter));
+			}
+		}else if(obj instanceof byte[]){
+			byte[] arr = (byte[]) obj;
+			for(byte o : arr){
+				str.append(String.format("%s%s", o,delimiter));
+			}
+		}else if(obj instanceof short[]){
+			short[] arr = (short[]) obj;
+			for(short o : arr){
+				str.append(String.format("%s%s", o,delimiter));
+			}
+		}else if(obj instanceof long[]){
+			long[] arr = (long[]) obj;
+			for(long o : arr){
+				str.append(String.format("%s%s", o,delimiter));
+			}
+		}else if(obj instanceof char[]){
+			char[] arr = (char[]) obj;
+			for(char o : arr){
+				str.append(String.format("%s%s", o,delimiter));
+			}
+		}else if(obj instanceof boolean[]){
+			boolean[] arr = (boolean[]) obj;
+			for(boolean o : arr){
+				str.append(String.format("%s%s", o,delimiter));
+			}
+		}else if(obj instanceof double[]){
+			double[] arr = (double[]) obj;
+			for(double o : arr){
+				str.append(String.format("%s%s", o,delimiter));
+			}
+		}else if(obj instanceof float[]){
+			float[] arr = (float[]) obj;
+			for(float o : arr){
+				str.append(String.format("%s%s", o,delimiter));
+			}
 		}else{
 			str.append(obj.toString());
 		}
 		return String.format("%s%s%s", prefix,StringUtil.trimEnd(str.toString(), delimiter),subfix);
+	}
+	/**
+	 * 将一个集合打包成一个字符串
+	 * @param obj 可以是list,set,map,Object[],
+	 * @param delimiter 分隔符
+	 * @return
+	 */
+	public static String packing(Object obj,String delimiter){
+		return packing(obj, "", "", delimiter);
+	}
+	public static String getParamsInfo(Object[] params){
+		StringBuffer sb = new StringBuffer();
+		for(int i = 0;i<params.length;i++){
+			Object obj = params[i];
+			sb.append(String.format("%s => %s,",obj.getClass().getSimpleName(),obj));
+		}
+		return String.format("size:%s ", params.length)+"["+StringUtil.trimEnd(sb.toString(), ",")+"]";
 	}
 }

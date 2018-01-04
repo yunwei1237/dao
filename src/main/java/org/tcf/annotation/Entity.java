@@ -18,4 +18,9 @@ public @interface Entity {
 	 * @return
 	 */
 	String catelog() default "";
+	/**
+	 * 对应数据库的模式名,默认为空
+	 * @return
+	 */
+	String schema() default "";
 }

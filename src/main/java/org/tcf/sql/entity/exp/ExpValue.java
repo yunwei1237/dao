@@ -1,17 +1,25 @@
-package org.tcf.sql.entity;
+package org.tcf.sql.entity.exp;
 
-import java.util.Collection;
+import java.util.List;
 
+import org.tcf.sql.entity.Operation;
+import org.tcf.sql.entity.SqlInfo;
 import org.tcf.sql.util.CollectionUtil;
 import org.tcf.sql.util.StringUtil;
 
-public class Expression {
+/**
+ * 代表一个值的表达式
+ * 如：age = 12
+ * @author Archer Tan
+ *
+ */
+public class ExpValue implements Expression {
 	private String name;
 	private Object value;
 	private Operation operation;
-	public Expression() {
+	public ExpValue() {
 	}
-	public Expression(String name, Object value, Operation operation) {
+	public ExpValue(String name, Object value, Operation operation) {
 		super();
 		this.name = name;
 		this.value = value;
@@ -38,11 +46,11 @@ public class Expression {
 	/**
 	 * 获得表达式的sql形式
 	 * @return
-	 * @throws Exception
 	 */
-	public String get() throws Exception {
+	public SqlInfo get() {
+		//关系表达式
 		if(Operation.in != operation && CollectionUtil.isCollection(value))
-			throw new Exception(String.format("%s操作符不能是集合", operation));
+			throw new RuntimeException(String.format("%s操作符不能是集合", operation));
 		String op = "";
 		if(Operation.eq == operation){
 			op = "=";
@@ -65,12 +73,13 @@ public class Expression {
 		}else if(Operation.like == operation){
 			op = "like";
 		}
-		Object val = Operation.in == operation ?StringUtil.packing(value, "(", ")", ","):value;
-		return String.format("%s %s %s", name,op,val);
+		Object val = Operation.in == operation ? StringUtil.packing(value, "(", ")", ","):value;
+		String sql = String.format("%s %s ?", name,op);
+		return new SqlInfo(sql, name, val);
 	}
 	@Override
 	public String toString() {
-		return "Expression [name=" + name + ", value=" + value + ", operation="
+		return "ExpValue [name=" + name + ", value=" + value + ", operation="
 				+ operation + "]";
 	}
 	

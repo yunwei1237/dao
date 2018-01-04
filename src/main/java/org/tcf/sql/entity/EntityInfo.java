@@ -16,6 +16,10 @@ public class EntityInfo {
 	 */
 	private String catelog;
 	/**
+	 * 用于保存数据库模式名
+	 */
+	private String schema;
+	/**
 	 * 用于保存表名
 	 */
 	private String table;
@@ -27,6 +31,10 @@ public class EntityInfo {
 	 * 用于保存某些主键下的其它的信息，比如序列名称
 	 */
 	private String typeValue;
+	/**
+	 * 用于保存主键
+	 */
+	private ColumnInfo id;
 	/**
 	 * 用于保存所有列信息
 	 */
@@ -73,6 +81,18 @@ public class EntityInfo {
 	}
 	public void setColumns(List<ColumnInfo> columns) {
 		this.columns = columns;
+	}
+	public String getSchema() {
+		return schema;
+	}
+	public void setSchema(String schema) {
+		this.schema = schema;
+	}
+	public ColumnInfo getId() {
+		return id;
+	}
+	public void setId(ColumnInfo id) {
+		this.id = id;
 	}
 	@Override
 	public String toString() {
