@@ -47,9 +47,9 @@ public class EntityUtil {
 		if(entityAnno == null)
 			throw new DaoException(clazz.getName()+":实体没有Entity注解");
 		String catelog = (String)AnnotationUtil.getAnnotationVal(entityAnno, "catelog");
-		info.setCatelog(StringUtil.isEmpty(catelog)?"":catelog+".");//数据库名
+		info.setCatelog(StringUtil.isEmpty(catelog)?null:catelog+".");//数据库名
 		String schema = (String)AnnotationUtil.getAnnotationVal(entityAnno, "schema");
-		info.setSchema(StringUtil.isEmpty(schema)?"":schema+".");//数据模式名
+		info.setSchema(StringUtil.isEmpty(schema)?null:schema+".");//数据模式名
 		String table = (String)AnnotationUtil.getAnnotationVal(entityAnno, "table");
 		info.setTable(StringUtil.isEmpty(table)?className:table);//表名
 		//保存所有列名

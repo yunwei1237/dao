@@ -1,7 +1,9 @@
 package org.tcf.sql.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.tcf.sql.entity.ColumnInfo;
 import org.tcf.sql.entity.LikeType;
 import org.tcf.sql.entity.Operation;
 import org.tcf.sql.entity.exp.ExpLogic;
@@ -68,6 +70,13 @@ public class ExpUtil {
 			exp = ExpLogic.and(exp, exps.get(i));
 		}
 		return exp;
+	}
+	public static List<ExpValue> getEqList(List<ColumnInfo> columns){
+		List<ExpValue> list = new ArrayList<ExpValue>();
+		for(ColumnInfo column : columns){
+			list.add(ExpUtil.eq(column.getName(), column.getValue()));
+		}
+		return list;
 	}
 	/**
 	 * 将所有表达式以or方式连接

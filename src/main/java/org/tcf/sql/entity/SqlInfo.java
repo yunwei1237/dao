@@ -25,12 +25,12 @@ public class SqlInfo {
 	
 	public SqlInfo(String sql, List<String> keyList, List<Object> values) {
 		super();
-		this.sql = sql;
+		this.setSql(sql);
 		this.addPlaceholders(keyList, values);
 	}
 	public SqlInfo(String sql, Expression...exps) {
 		super();
-		this.sql = sql;
+		this.setSql(sql);
 		this.addPlaceholders(exps);
 	}
 	public SqlInfo() {
@@ -44,13 +44,14 @@ public class SqlInfo {
 	 */
 	public SqlInfo(String sql, String key,Object val) {
 		super();
-		this.sql = sql;
+		this.setSql(sql);
 		this.addPlaceholder(key, val);
 	}
 	public String getSql() {
 		return sql;
 	}
 	public void setSql(String sql) {
+		sql = sql.replaceAll("\\s+", " ");//去掉sql中多余的空格
 		this.sql = sql;
 	}
 	public List<String> getKeyList() {
