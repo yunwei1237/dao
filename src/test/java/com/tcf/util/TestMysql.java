@@ -21,6 +21,6 @@ public class TestMysql {
 		/*System.out.println(gen.genertInsert(info));
 		System.out.println(gen.genertUpdate(info,ExpUtil.eq("gradeId", 1)));
 		System.out.println(gen.genertDelete(info,ExpUtil.eq("gradeId", 1)));*/
-		System.out.println(gen.genertSelect(info,ExpUtil.eq("gradeId", 1), new String[]{"gradeId"}, ExpUtil.eq("gradeId", 1), new Order[]{new Order(new ColumnInfo("gradeId", null), OrderType.desc)}, 0, 12));
+		//System.out.println(gen.genertSelect(info,ExpUtil.eq("gradeId", 1), new String[]{"gradeId"}, ExpUtil.eq("gradeId", 1), new Order[]{new Order(new ColumnInfo("gradeId", null), OrderType.desc)}, 0, 12));
 	}
 }

@@ -3,6 +3,7 @@ package org.tcf.sql.util;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -128,28 +129,28 @@ public class EntityUtil {
 		Object val = null;
 		try {
 			if("java.lang.Integer".equals(type.getName()) 
-					&& "int".equals(type.getName())){
+					|| "int".equals(type.getName())){
 				val = rs.getInt(name);
 			}else if("java.lang.Double".equals(type.getName())
-					&& "double".equals(type.getName())){
+					|| "double".equals(type.getName())){
 				val = rs.getDouble(name);
 			}else if("java.lang.Short".equals(type.getName())
-					&& "short".equals(type.getName())){
+					|| "short".equals(type.getName())){
 				val = rs.getShort(name);
 			}else if("java.lang.Byte".equals(type.getName())
-					&& "byte".equals(type.getName())){
+					|| "byte".equals(type.getName())){
 				val = rs.getByte(name);
 			}else if("java.lang.Long".equals(type.getName()) 
-					&& "long".equals(type.getName())){
+					|| "long".equals(type.getName())){
 				val = rs.getLong(name);
 			}else if("java.lang.Character".equals(type.getName())
-					&& "char".equals(type.getName())){
+					|| "char".equals(type.getName())){
 				val = rs.getString(name).charAt(0);
 			}else if("java.lang.Float".equals(type.getName())
-					&& "float".equals(type.getName())){
+					|| "float".equals(type.getName())){
 				val = rs.getFloat(name);
 			}else if("java.lang.Boolean".equals(type.getName())
-					&& "boolean".equals(type.getName())){
+					|| "boolean".equals(type.getName())){
 				val = rs.getBoolean(name);
 			}else if("java.lang.String".equals(type.getName())){
 				val = rs.getString(name);
@@ -171,7 +172,7 @@ public class EntityUtil {
 	 * @return
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static List fill(ResultSet rs,Class clazz){
+	public static List fillObject(ResultSet rs,Class clazz){
 		List list = new ArrayList();
 		try {
 			while(rs.next()){
@@ -206,6 +207,29 @@ public class EntityUtil {
 		}
 		return list;
 	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static List fillList(ResultSet rs){
+		List list = new ArrayList();
+		try {
+			ResultSetMetaData metas = rs.getMetaData();
+			int count = metas.getColumnCount();
+			while(rs.next()){
+				Object[] objs = new Object[count];
+				for(int i = 0;i<count;i++){
+					objs[i] = rs.getObject(i+1);
+				}
+				list.add(objs);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
+	public Map fillMap(ResultSet rs){
+		
+		return null;
+	}
 	/**
 	 * 根据提供的列信息生成条件
 	 * @param columns
@@ -216,7 +240,7 @@ public class EntityUtil {
 		List<ExpValue> exps = new ArrayList<ExpValue>();
 		for(ColumnInfo column:columns){
 			if(CollectionUtil.containsIgnoreCase(Arrays.asList(likes), column.getName())){
-				exps.add(ExpUtil.like(column.getName(), column.getValue()));
+				exps.add(ExpUtil.like(column.getName(), column.getValue().toString()));
 			}else{
 				exps.add(ExpUtil.eq(column.getName(), column.getValue()));
 			}
@@ -238,6 +262,8 @@ public class EntityUtil {
 	 * @return
 	 */
 	public static List<ColumnInfo> change(Map<String,Object> map){
+		if(map == null) 
+			return null;
 		List<ColumnInfo> columns = new ArrayList<ColumnInfo>();
 		for(String key:map.keySet()){
 			columns.add(new ColumnInfo(key, map.get(key)));
@@ -250,6 +276,8 @@ public class EntityUtil {
 	 * @return
 	 */
 	public static Map<String,Object> change(List<ColumnInfo> columns){
+		if(columns == null)
+			return null;
 		Map<String,Object> map = new HashMap<String, Object>();
 		for(ColumnInfo column:columns){
 			map.put(column.getName().toLowerCase(), column.getValue());

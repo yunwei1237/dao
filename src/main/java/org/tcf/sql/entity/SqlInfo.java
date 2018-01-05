@@ -109,7 +109,11 @@ public class SqlInfo {
 		List list = new ArrayList();
 		for(int i = 0;i<keyList.size();i++){
 			String key = keyList.get(i);
-			Object val = values.get(i) == null?columns.get(key):values.get(i);
+			Object val = null;
+			if(columns != null)
+				val = values.get(i) == null?columns.get(key):values.get(i);
+			else
+				val = values.get(i);
 			if(val != null)
 				list.add(val);
 		}

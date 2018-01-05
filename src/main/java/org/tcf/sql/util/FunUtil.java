@@ -8,19 +8,19 @@ public class FunUtil {
 	 * @param columnName
 	 * @return
 	 */
-	public Function avg(){
+	public static Function avg(){
 		return new Function("avg");
 	}
-	public Function max(){
+	public static Function max(){
 		return new Function("max");
 	}
-	public Function min(){
+	public static Function min(){
 		return new Function("min");
 	}
-	public Function count(){
+	public static Function count(){
 		return new Function("count");
 	}
-	public Function sum(){
+	public static Function sum(){
 		return new Function("sum");
 	}
 }

@@ -2,6 +2,7 @@ package org.tcf.sql.util;
 
 import java.util.List;
 
+import org.tcf.sql.entity.LikeType;
 import org.tcf.sql.entity.Operation;
 import org.tcf.sql.entity.exp.ExpLogic;
 import org.tcf.sql.entity.exp.ExpValue;
@@ -36,8 +37,18 @@ public class ExpUtil {
 	public static ExpValue in(String name,Object value){
 		return new ExpValue(name, value, Operation.in);
 	}
-	public static ExpValue like(String name,Object value){
+	public static ExpValue like(String name,String value,LikeType type){
+		if(type == LikeType.start){
+			value = value + "%";
+		}else if(type == LikeType.end){
+			value = "%" + value;
+		}else{
+			value = "%" + value + "%";
+		}
 		return new ExpValue(name, value, Operation.like);
+	}
+	public static ExpValue like(String name,String value){
+		return like(name, value,LikeType.containt);
 	}
 	/**
 	 * 将所有表达式以and方式连接

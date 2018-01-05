@@ -1,7 +1,5 @@
 package org.tcf.sql.entity.exp;
 
-import java.util.List;
-
 import org.tcf.sql.entity.Operation;
 import org.tcf.sql.entity.SqlInfo;
 import org.tcf.sql.util.CollectionUtil;

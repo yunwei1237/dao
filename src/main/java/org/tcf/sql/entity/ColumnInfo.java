@@ -57,6 +57,11 @@ public class ColumnInfo {
 		this.foreignKey = foreignKey;
 		this.function = function;
 	}
+	
+	public ColumnInfo(String name) {
+		super();
+		this.name = name;
+	}
 	public ColumnInfo(String name, Object value) {
 		super();
 		this.name = name;
@@ -120,6 +125,20 @@ public class ColumnInfo {
 	}
 	public void setFunction(Function function) {
 		this.function = function;
+	}
+	/**
+	 * 获得列的字符串形式，并检查该列是否有函数修饰，如果有，就显示出来<br />
+	 * 有函数，如：avg(age)<br />
+	 * 无函数，如：age <br />
+	 * @param column
+	 * @return
+	 */
+	public String getColumnString(){
+		if(this.getFunction() != null){//如果该列存在一个函数，就使用函数，如：avg(age)
+			return this.getFunction().get(this.getName());
+		}else{//没有函数，如：age,
+			return this.getName();
+		}
 	}
 	@Override
 	public String toString() {

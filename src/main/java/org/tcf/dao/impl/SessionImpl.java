@@ -1,119 +1,71 @@
 package org.tcf.dao.impl;
 
+import java.io.Serializable;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.tcf.dao.Session;
-import org.tcf.sql.entity.ConditionType;
-import org.tcf.sql.entity.EntityInfo;
+import org.tcf.sql.entity.ColumnInfo;
+import org.tcf.sql.entity.NonQueryType;
 import org.tcf.sql.entity.Order;
-import org.tcf.sql.entity.SqlInfo;
 import org.tcf.sql.entity.exp.Expression;
-import org.tcf.sql.generator.SqlGenerator;
-import org.tcf.sql.generator.impl.MySqlSqlGenerator;
 import org.tcf.sql.util.EntityUtil;
-import org.tcf.sql.util.ExpUtil;
-import org.tcf.sql.util.StringUtil;
+import org.tcf.sql.util.SessionUtil;
+
+import com.tcf.exception.DaoException;
 
 public class SessionImpl implements Session {
-	private static final Logger logger = Logger.getLogger(SessionImpl.class);
-	private SqlGenerator gen = new MySqlSqlGenerator();
+	
 	@Override
 	public int save(Object obj){
 		// TODO Auto-generated method stub
-		EntityInfo info = EntityUtil.getInfo(obj);
-		SqlInfo sqlInfo = gen.genertInsert(info);
-		Object[] params = sqlInfo.getValues(EntityUtil.change(info.getColumns()));
-		logger.info(String.format("   Sql:\t%s", sqlInfo.getSql()));
-		logger.info(String.format("Params:\t%s", StringUtil.getParamsInfo(params)));
-		//return BaseDao.executeNonQuery(sql, params);
-		return 0;
+		return SessionUtil.update(obj,NonQueryType.insert);
 	}
 
 	@Override
 	public int update(Object obj){
 		// TODO Auto-generated method stub
-		EntityInfo info = EntityUtil.getInfo(obj);
-		Expression where = ExpUtil.eq(info.getId().getName(), info.getId().getValue());
-		SqlInfo sqlInfo = gen.genertUpdate(info,where);
-		Object[] params = sqlInfo.getValues(EntityUtil.change(info.getColumns()));
-		logger.info(String.format("   Sql:\t%s", sqlInfo.getSql()));
-		logger.info(String.format("Params:\t%s", StringUtil.getParamsInfo(params)));
-		//return BaseDao.executeNonQuery(sql, params);
-		return 0;
+		return SessionUtil.update(obj,NonQueryType.update);
 	}
 
 	@Override
 	public int delete(Object obj){
 		// TODO Auto-generated method stub
-		EntityInfo info = EntityUtil.getInfo(obj);
-		Expression where = ExpUtil.eq(info.getId().getName(), info.getId().getValue());
-		SqlInfo sqlInfo = gen.genertDelete(info,where);
-		Object[] params = sqlInfo.getValues(EntityUtil.change(info.getColumns()));
-		logger.info(String.format("   Sql:\t%s", sqlInfo.getSql()));
-		logger.info(String.format("Params:\t%s", StringUtil.getParamsInfo(params)));
-		//return BaseDao.executeNonQuery(sql, params);
-		return 0;
+		return SessionUtil.update(obj,NonQueryType.delete);
 	}
 
 	@Override
-	public List find(String sql, Class clazz, Object... params) {
+	public Object get(Class<?> clazz, Serializable id) throws DaoException {
 		// TODO Auto-generated method stub
-		return null;
+		return SessionUtil.get(clazz, id);
 	}
 
 	@Override
-	public List find(Object obj) {
+	public List find(String sql, List<Object> params, Class<?> clazz)
+			throws DaoException {
 		// TODO Auto-generated method stub
-		return null;
+		return EntityUtil.fillObject(SessionUtil.query(sql, params), clazz);
 	}
 
 	@Override
-	public List find(Object obj, Order... orders) {
+	public List<Object[]> find(String sql, List<Object> params) throws DaoException {
 		// TODO Auto-generated method stub
-		return null;
+		return EntityUtil.fillList(SessionUtil.query(sql, params));
 	}
 
 	@Override
-	public List find(Object obj, Integer begin, Integer size) {
+	public List find(String catelog, String schema,
+			String table,List<ColumnInfo> columns, Expression where, List<Order> orders,
+			Integer begin, Integer size,Class<?> clazz) throws DaoException {
 		// TODO Auto-generated method stub
-		return null;
+		return EntityUtil.fillObject(SessionUtil.query(columns, catelog, schema, table, where, null, null, orders, begin, size), clazz);
 	}
 
 	@Override
-	public List find(Object obj, Integer begin, Integer size,
-			Order... orders) {
+	public List<Object[]> find(String catelog, String schema,
+			String table,List<ColumnInfo> columns, Expression where, List<ColumnInfo> groups, Expression having,
+			List<Order> orders, Integer begin, Integer size) throws DaoException {
 		// TODO Auto-generated method stub
-		return null;
+		return EntityUtil.fillList(SessionUtil.query(columns, catelog, schema, table, where, groups, having, orders, begin, size));
 	}
-
-	@Override
-	public List find(Object obj,String[] likes, String[] groups, Order[] orders,
-			Integer begin, Integer size, ConditionType type){
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List find(Class clazz, Expression where, String[] groups,
-			Expression having, Order[] orders, Integer begin, Integer size){
-		// TODO Auto-generated method stub
-		EntityInfo info = null;
-		try {
-			info = EntityUtil.getInfo(clazz.newInstance(),true);
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		SqlInfo sqlInfo = gen.genertSelect(info, where, groups, having, orders, begin, size);
-		Object[] params = sqlInfo.getValues(EntityUtil.change(info.getColumns()));
-		logger.info(String.format("   Sql:\t%s", sqlInfo.getSql()));
-		logger.info(String.format("Params:\t%s", StringUtil.getParamsInfo(params)));
-		//ResultSet rs = BaseDao.executeQuery(sqlInfo.getSql(), params);
-		//return EntityUtil.fill(rs, clazz);
-		return null;
-	}
+	
 }

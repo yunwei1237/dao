@@ -60,25 +60,28 @@ public class CollectionUtil {
 	
 	public static List getList(Object...objs){
 		List result = new ArrayList();
-		for(Object obj:objs){
-			result.add(obj);
-		}
+		if(objs != null)
+			for(Object obj:objs){
+				result.add(obj);
+			}
 		return result;
 	}
 	public static List getList(List...lists){
 		List result = new ArrayList();
-		for(List list:lists){
-			if(list != null)
-				result.addAll(list);
-		}
+		if(lists != null)
+			for(List list:lists){
+				if(list != null)
+					result.addAll(list);
+			}
 		return result;
 	}
 	public static Map getMap(Map...maps){
 		Map result = new HashMap();
-		for(Map map:maps){
-			if(map != null)
-				result.putAll(map);
-		}
+		if(maps != null)
+			for(Map map:maps){
+				if(map != null)
+					result.putAll(map);
+			}
 		return result;
 	}
 }

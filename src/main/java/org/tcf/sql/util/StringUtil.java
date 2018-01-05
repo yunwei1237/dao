@@ -1,5 +1,6 @@
 package org.tcf.sql.util;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -126,12 +127,53 @@ public class StringUtil {
 	public static String packing(Object obj,String delimiter){
 		return packing(obj, "", "", delimiter);
 	}
-	public static String getParamsInfo(Object[] params){
+	public static String getParamsInfo(Object ... params){
 		StringBuffer sb = new StringBuffer();
-		for(int i = 0;i<params.length;i++){
-			Object obj = params[i];
-			sb.append(String.format("%s => %s,",obj.getClass().getSimpleName(),obj));
+		if(params != null && params.length>0){
+			for(int i = 0;i<params.length;i++){
+				Object obj = params[i];
+				sb.append(String.format("%s => %s,",obj.getClass().getSimpleName(),obj));
+			}
+			return String.format("size:%s ", params.length)+"["+StringUtil.trimEnd(sb.toString(), ",")+"]";
 		}
-		return String.format("size:%s ", params.length)+"["+StringUtil.trimEnd(sb.toString(), ",")+"]";
+		return String.format("size:%s ", 0)+"[]";
+	}
+	public static String listInfo(List list){
+		StringBuffer sb = new StringBuffer();
+		for(Object obj:list){
+			sb.append(toString(obj)+"\n");
+		}
+		return sb.toString();
+	}
+	
+	public static String toString(Object obj){
+		String type = obj.getClass().getName();
+		String val = null;
+		if("java.sql.Date".equals(type)){
+			val = ((java.sql.Date)obj).toLocaleString();
+		}else if("java.util.Date".equals(type)){
+			val = ((java.util.Date)obj).toLocaleString();
+		}else if(obj instanceof Object[]){
+			val = Arrays.toString((Object[])obj);
+		}else if(obj instanceof byte[]){
+			val = Arrays.toString((byte[])obj);
+		}else if(obj instanceof short[]){
+			val = Arrays.toString((short[])obj);
+		}else if(obj instanceof int[]){
+			val = Arrays.toString((int[])obj);
+		}else if(obj instanceof long[]){
+			val = Arrays.toString((long[])obj);
+		}else if(obj instanceof double[]){
+			val = Arrays.toString((double[])obj);
+		}else if(obj instanceof float[]){
+			val = Arrays.toString((float[])obj);
+		}else if(obj instanceof boolean[]){
+			val = Arrays.toString((boolean[])obj);
+		}else if(obj instanceof char[]){
+			val = Arrays.toString((char[])obj);
+		}else{
+			val = obj.toString();
+		}
+		return val;
 	}
 }
