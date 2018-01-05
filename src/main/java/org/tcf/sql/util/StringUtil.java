@@ -1,5 +1,8 @@
 package org.tcf.sql.util;
 
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -175,5 +178,62 @@ public class StringUtil {
 			val = obj.toString();
 		}
 		return val;
+	}
+	/**
+	 * 将字符串转换成其它类型
+	 * @param str
+	 * @param type
+	 * @param format 日期的格式
+	 * @return
+	 */
+	public static Object convertType(String str,Class<?> type,String format){
+		Object val = null;
+		String typeName = type.getName();
+		try {
+			if("java.lang.Integer".equals(typeName) 
+					|| "int".equals(type.getName())){
+				val = Integer.valueOf(str);
+			}else if("java.lang.Double".equals(typeName)
+					|| "double".equals(type.getName())){
+				val = Double.valueOf(str);
+			}else if("java.lang.Short".equals(typeName)
+					|| "short".equals(type.getName())){
+				val = Short.valueOf(str);
+			}else if("java.lang.Byte".equals(typeName)
+					|| "byte".equals(type.getName())){
+				val = Byte.valueOf(str);
+			}else if("java.lang.Long".equals(typeName) 
+					|| "long".equals(type.getName())){
+				val = Long.valueOf(str);
+			}else if("java.lang.Character".equals(typeName)
+					|| "char".equals(type.getName())){
+				val = Character.valueOf(str.charAt(0));
+			}else if("java.lang.Float".equals(typeName)
+					|| "float".equals(type.getName())){
+				val = Float.valueOf(str);
+			}else if("java.lang.Boolean".equals(typeName)
+					|| "boolean".equals(type.getName())){
+				val = Boolean.valueOf(str);
+			}else if("java.sql.Date".equals(typeName)){
+				val = new java.sql.Date(new SimpleDateFormat(format).parse(str).getTime());
+			}else if("java.util.Date".equals(typeName)){
+				val = new SimpleDateFormat(format).parse(str);
+			}else{
+				val = str;
+			}
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return val;
+	}
+	/**
+	 * 将字符串转换成其它类型，日期格式为：yyyy-MM-dd
+	 * @param str
+	 * @param type
+	 * @return
+	 */
+	public static Object convertType(String str,Class<?> type){
+		return convertType(str, type, "yyyy-MM-dd");
 	}
 }

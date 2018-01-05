@@ -3,6 +3,7 @@ package org.tcf.sql.generator.impl;
 import java.util.List;
 
 import org.tcf.annotation.PrimaryKeyType;
+import org.tcf.exception.DaoException;
 import org.tcf.sql.entity.ColumnInfo;
 import org.tcf.sql.entity.EntityInfo;
 import org.tcf.sql.entity.Order;
@@ -12,7 +13,6 @@ import org.tcf.sql.generator.SqlGenerator;
 import org.tcf.sql.util.SqlUtil;
 import org.tcf.sql.util.StringUtil;
 
-import com.tcf.exception.DaoException;
 
 public class MySqlSqlGenerator implements SqlGenerator {
 

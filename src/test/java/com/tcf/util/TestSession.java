@@ -1,8 +1,13 @@
 package com.tcf.util;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.junit.Test;
+import org.tcf.config.Configuration;
+import org.tcf.config.SessionFactory;
+import org.tcf.config.impl.PropertiesConfigurationImpl;
+import org.tcf.dao.Session;
 import org.tcf.dao.impl.SessionImpl;
 import org.tcf.sql.entity.ColumnInfo;
 import org.tcf.sql.entity.Order;
@@ -16,8 +21,9 @@ import com.tcf.entity.Student;
 
 public class TestSession {
 
+	SessionFactory sf = new PropertiesConfigurationImpl().config("dao.properties");
+	Session impl= sf.getSession();
 	public void test1(){
-		SessionImpl impl= new SessionImpl();
 		Grade obj = new Grade(1, "abc");
 		/*impl.save(obj);
 		impl.update(obj);
@@ -26,7 +32,6 @@ public class TestSession {
 		List<Grade> list = impl.find("select * from Grade",null, Grade.class);
 		System.out.println(StringUtil.listInfo(list));
 	}
-	SessionImpl impl= new SessionImpl();
 	/*@Test
 	public void testSave(){
 		Grade obj = new Grade(1, "test");
@@ -85,4 +90,18 @@ public class TestSession {
 		Student stu = (Student) impl.get(Student.class, "S1101001");
 		System.out.println(stu);
 	}
+	/*@Test
+	public void testTransaction(){
+		Grade g1 = new Grade(1, "test3");
+		Grade g2 = new Grade(2, "test4");
+		try {
+			impl.save(g1);
+			impl.save(g2);
+			impl.commit();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			impl.rollback();
+		}
+	}*/
 }

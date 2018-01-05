@@ -16,12 +16,12 @@ import org.tcf.annotation.Entity;
 import org.tcf.annotation.Id;
 import org.tcf.annotation.NoColumn;
 import org.tcf.annotation.PrimaryKeyType;
+import org.tcf.exception.DaoException;
 import org.tcf.sql.entity.ColumnInfo;
 import org.tcf.sql.entity.EntityInfo;
 import org.tcf.sql.entity.exp.ExpValue;
 import org.tcf.sql.entity.exp.Expression;
 
-import com.tcf.exception.DaoException;
 
 /**
  * 用于处理与实体相关的工具
@@ -165,6 +165,7 @@ public class EntityUtil {
 		}
 		return val;
 	}
+	
 	/**
 	 * 将resultset类型转换成实体的集合(暂时不支持关系 ：多对一，一对多之类)
 	 * @param rs

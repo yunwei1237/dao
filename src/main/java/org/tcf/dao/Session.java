@@ -3,12 +3,10 @@ package org.tcf.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import org.tcf.exception.DaoException;
 import org.tcf.sql.entity.ColumnInfo;
 import org.tcf.sql.entity.Order;
 import org.tcf.sql.entity.exp.Expression;
-
-import com.tcf.exception.DaoException;
-
 
 /**
  * 
@@ -19,6 +17,9 @@ public interface Session {
 	int save(Object obj) throws DaoException;
 	int update(Object obj) throws DaoException;
 	int delete(Object obj) throws DaoException;
+	void commit() throws DaoException;
+	void rollback() throws DaoException;
+	void close() throws DaoException;
 	Object get(Class<?> clazz,Serializable id) throws DaoException;
 	List find(String sql,List<Object> params,Class<?> clazz) throws DaoException;
 	List<Object[]> find(String sql,List<Object> params) throws DaoException;
