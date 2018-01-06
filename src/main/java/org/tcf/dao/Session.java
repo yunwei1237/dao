@@ -26,8 +26,8 @@ public interface Session {
 	List findByExample(Object entity,Order...orders);
 	List findByExample(Object entity,Integer begin,Integer size);
 	List findByExample(Object entity,Integer begin,Integer size,Order...orders);
-	List find(String sql,List<Object> params,Class clazz) throws DaoException;
-	List find(String sql,List<Object> params) throws DaoException;
+	List find(String sql,Object...params) throws DaoException;
+	List find(String sql,Class clazz,Object...params) throws DaoException;
 	List find(String catelog,String schema,String table,List<ColumnInfo> columns,Expression where,List<Order> orders,Integer begin,Integer size,Class clazz) throws DaoException;
 	List find(String catelog,String schema,String table,List<ColumnInfo> columns,Expression where,List<ColumnInfo> groups,Expression having,List<Order> orders,Integer begin,Integer size) throws DaoException;
 }

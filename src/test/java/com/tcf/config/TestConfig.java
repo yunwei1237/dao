@@ -9,8 +9,7 @@ public class TestConfig {
 	
 	@Test
 	public void test(){
-		Configuration conf = new PropertiesConfigurationImpl();
-		SessionFactory sf = conf.config("dao.properties");
+		SessionFactory sf = new PropertiesConfigurationImpl("dao.properties").buildSessionFactory();
 		System.out.println(sf);
 	}
 }

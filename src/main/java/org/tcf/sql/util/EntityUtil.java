@@ -39,11 +39,11 @@ public class EntityUtil {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static EntityInfo getInfo(Object entity,boolean containNull){
 		EntityInfo info = new EntityInfo();
-		ColumnInfo pk = null;
 		Class clazz = entity.getClass();
 		String className = clazz.getSimpleName();
 		//处理Entity注解
 		Annotation entityAnno = clazz.getAnnotation(Entity.class);
+		//实体类必须使用@Entity注解
 		if(entityAnno == null)
 			throw new DaoException(clazz.getName()+":实体没有Entity注解");
 		String catelog = (String)AnnotationUtil.getAnnotationVal(entityAnno, "catelog");
@@ -64,30 +64,40 @@ public class EntityUtil {
 				if(containNull == false && getFieldVal(field, entity) == null)
 					continue;
 				ColumnInfo column = new ColumnInfo();
-				//@Id，
+				//@Id
 				Annotation idAnno = field.getAnnotation(Id.class);
 				//@Column
 				Annotation columnAnno = field.getAnnotation(Column.class);
 				if(idAnno != null){
-					if(pk != null) 
+					if(info.getId() != null)// 指定主键对应的列，以免多个列指定@Id注解
 						throw new DaoException(clazz.getName()+"实体的属性"+field.getName()+"出现重复的@Id注解");
 					//说明该列为主键
 					column.setPrimaryKey(true);
+					//type
 					info.setType((PrimaryKeyType)AnnotationUtil.getAnnotationVal(idAnno, "type"));
-					//指定主键对应的列，以免多个列指定@Id注解
-					pk = column;
+					//sequenceName
+					info.setTypeValue((String)AnnotationUtil.getAnnotationVal(idAnno, "sequenceName"));
+					//保存主键的列
+					info.setId(column);
 				}
-				if(columnAnno != null){
-					String name = (String) AnnotationUtil.getAnnotationVal(columnAnno, "name");//列名
-					column.setName(StringUtil.isEmpty(name)?field.getName():name);//未指定列名时使用属性名
-					column.setValue(getFieldVal(field, entity));//值
-					column.setType(field.getType());
-				}
+				//name
+				String name = (String) AnnotationUtil.getAnnotationVal(columnAnno, "name");//列名
+				column.setName(StringUtil.isEmpty(name)?field.getName():name);//未指定列名时使用属性名
+				//length
+				int length = (Integer) AnnotationUtil.getAnnotationVal(columnAnno, "length");
+				column.setLength(length);
+				//scale
+				int scale = (Integer) AnnotationUtil.getAnnotationVal(columnAnno, "scale");
+				column.setScale(scale);
+				//length
+				Boolean notNull = (Boolean) AnnotationUtil.getAnnotationVal(columnAnno, "notNull");
+				column.setNotNull(notNull);
+				column.setValue(getFieldVal(field, entity));//值
+				column.setType(field.getType());
 				columns.add(column);
 			}
 		}
 		info.setColumns(columns);
-		info.setId(pk);//保存主键
 		return info;
 	}
 	/**

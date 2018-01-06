@@ -27,7 +27,7 @@
 	    <version>5.1.38</version>
 	</dependency>
   </dependencies>
-  <!-- <build>
+  <build>
     <finalName>dao</finalName>
-  </build> -->
+  </build>
 </project>

@@ -8,5 +8,5 @@ public interface Configuration {
 	 * @param config
 	 * @return
 	 */
-	SessionFactory config(String config);
+	SessionFactory buildSessionFactory();
 }

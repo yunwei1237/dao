@@ -56,10 +56,10 @@ public class SessionUtil {
 	 * @param params
 	 * @return
 	 */
-	public ResultSet query(String sql, List<Object> params){
+	public ResultSet query(String sql, Object...params){
 		logger.info(String.format("   Sql:\t%s", sql));
-		logger.info(String.format("Params:\t%s", StringUtil.getParamsInfo(params.toArray())));
-		return basedao.executeQuery(sql, params.toArray());
+		logger.info(String.format("Params:\t%s", StringUtil.getParamsInfo(params)));
+		return basedao.executeQuery(sql, params);
 	}
 	/**
 	 * 执行增删改

@@ -13,7 +13,6 @@ import org.tcf.sql.entity.NonQueryType;
 import org.tcf.sql.entity.Order;
 import org.tcf.sql.entity.exp.Expression;
 import org.tcf.sql.generator.SqlGenerator;
-import org.tcf.sql.util.CollectionUtil;
 import org.tcf.sql.util.EntityUtil;
 import org.tcf.sql.util.ExpUtil;
 import org.tcf.sql.util.SessionUtil;
@@ -50,14 +49,14 @@ public class SessionImpl implements Session {
 	}
 
 	@Override
-	public List find(String sql, List<Object> params, Class clazz)
+	public List find(String sql, Class clazz,Object...params)
 			throws DaoException {
 		// TODO Auto-generated method stub
 		return EntityUtil.fillObject(sessionUtil.query(sql, params), clazz);
 	}
 
 	@Override
-	public List find(String sql, List<Object> params) throws DaoException {
+	public List find(String sql, Object...params) throws DaoException {
 		// TODO Auto-generated method stub
 		return EntityUtil.fillList(sessionUtil.query(sql, params));
 	}

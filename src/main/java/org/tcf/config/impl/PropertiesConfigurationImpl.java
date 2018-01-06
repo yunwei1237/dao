@@ -8,13 +8,17 @@ import java.util.Properties;
 import org.tcf.config.ConfigInfo;
 import org.tcf.config.Configuration;
 import org.tcf.config.SessionFactory;
-import org.tcf.dao.BaseDao;
-import org.tcf.sql.util.EntityUtil;
 import org.tcf.sql.util.StringUtil;
 
 public class PropertiesConfigurationImpl implements Configuration {
-	@Override
-	public SessionFactory config(String config) {
+	private String config;
+	
+	public PropertiesConfigurationImpl(String config) {
+		super();
+		this.config = config;
+	}
+
+	private SessionFactory read(String config) {
 		// TODO Auto-generated method stub
 		Properties props = new Properties();
 		InputStream is = PropertiesConfigurationImpl.class.getClassLoader().getResourceAsStream(config);
@@ -39,6 +43,12 @@ public class PropertiesConfigurationImpl implements Configuration {
 			e.printStackTrace();
 		}
 		return new SessionFactory(info);
+	}
+
+	@Override
+	public SessionFactory buildSessionFactory() {
+		// TODO Auto-generated method stub
+		return read(config);
 	}
 
 }
